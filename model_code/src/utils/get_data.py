@@ -9,7 +9,7 @@ from odps import ODPS
 from odps.df import DataFrame
 from torch.nn.utils.rnn import pad_sequence
 
-os.chdir('./model_code/src')
+# os.chdir('./model_code/src')
 from config.dnn_config import config as dnn_config
 
 
