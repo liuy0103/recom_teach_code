@@ -1,6 +1,6 @@
 config = {
-    "access_id" : '',
-    "access_key" : '',
-    "project" : '',
-    "endpoint" : ''
+    "access_id": '',
+    "access_key": '',
+    "project": '',
+    "endpoint": ''
 }

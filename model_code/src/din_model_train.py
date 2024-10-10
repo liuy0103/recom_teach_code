@@ -27,8 +27,10 @@ dataset_train = MyPriorDataset(train_feature_numpy, train_label,dnn_config)
 print('train dataset finish')
 dataloader_train = DataLoader(dataset_train, batch_size=dnn_config["batch_size"], shuffle=False, collate_fn=seq_collate_fn)
 print('train dataloader finish')
+it = iter(dataloader_train)
+next(it)
 
-brands = ['b47686','b56508','b62063','b78739']
+brands = ['b47686', 'b56508', 'b62063', 'b78739']
 dataset_test_dict = {}
 dataloader_test_dict = {}
 for brand_id in brands: 
