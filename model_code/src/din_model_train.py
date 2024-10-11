@@ -91,9 +91,9 @@ for epoch in range(num_epochs):
                     with open(f'{log_dir}/models_{brand_id}_top_results_din_{total_step}.txt', 'w') as f:
                         for k, ratio in ratios.items():
                             f.write(f"Top {k} ratio of positive labels: {ratio:.4f}\n")
-            torch.save(model.state_dict(), f'models/din_saved_model/model_epoch_{epoch}_{total_step}.pth')
+            torch.save(model.state_dict(), f'model/din_saved_model/model_epoch_{epoch}_{total_step}.pth')
             model.train()
-    torch.save(model.state_dict(), f'models/din_saved_model/model_epoch_{epoch}.pth')
+    torch.save(model.state_dict(), f'model/din_saved_model/model_epoch_{epoch}.pth')
 
 
 def train_model(train_loader, test_loader_dict, model, criterion, optimizer, num_epochs=3):
