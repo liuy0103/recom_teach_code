@@ -59,7 +59,7 @@ for epoch in range(num_epochs):
             mask[ff] = mask[ff].to(device)
         labels = labels.to(device)
         optimizer.zero_grad()
-        outputs = model(features,mask)
+        outputs = model(features, mask)
         labels = torch.unsqueeze(labels, dim=1)
         loss = criterion(outputs, labels)
         loss.backward()
@@ -106,17 +106,17 @@ def train_model(train_loader, test_loader_dict, model, criterion, optimizer, num
                 mask[ff] = mask[ff].to(device)
             labels = labels.to(device) 
             optimizer.zero_grad()
-            outputs = model(features,mask)
-            labels = torch.unsqueeze(labels,dim=1)
+            outputs = model(features, mask)
+            labels = torch.unsqueeze(labels, dim=1)
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
             total_step += 1
-            if (total_step+1)%10 == 0:
+            if (total_step+1) % 10 == 0:
                 writer.add_scalar('Training Loss', loss.item(), total_step)
-            if (total_step+1)%100 == 0:
+            if (total_step+1) % 100 == 0:
                 print(f'Epoch {epoch}, Step {total_step}: Loss={loss.item(): .4f}')
-            if (total_step+1)%7000 == 0:
+            if (total_step+1) % 7000 == 0:
                 with torch.no_grad():
                     model.eval()
                     for brand_id in brands:
@@ -125,7 +125,7 @@ def train_model(train_loader, test_loader_dict, model, criterion, optimizer, num
                         test_preds = []
                         test_targets = []
                         for data, mask, target in test_loader_dict[brand_id]:
-                            output = model(data,mask)
+                            output = model(data, mask)
                             test_preds.extend(output.sigmoid().squeeze().tolist())
                             test_targets.extend(target.squeeze().tolist())
 
@@ -151,7 +151,7 @@ def train_model(train_loader, test_loader_dict, model, criterion, optimizer, num
             test_preds = []
             test_targets = []
             for data, mask, target in test_loader_dict[brand_id]:
-                output = model(data,mask)
+                output = model(data, mask)
                 test_preds.extend(output.sigmoid().squeeze().tolist())
                 test_targets.extend(target.squeeze().tolist())
 
