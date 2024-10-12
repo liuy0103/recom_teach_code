@@ -95,6 +95,29 @@ for epoch in range(num_epochs):
             model.train()
     torch.save(model.state_dict(), f'model/din_saved_model/model_epoch_{epoch}.pth')
 
+with torch.no_grad():
+    model.eval()
+    for brand_id in brands:
+        #brand_id='b56508'
+        # 需要计算top数量
+        top_k_list = [1000, 3000, 5000, 10000, 50000]
+        test_preds = []
+        test_targets = []
+        for data, mask, target in dataloader_test_dict[brand_id]:
+            output = model(data, mask)
+            test_preds.extend(output.sigmoid().squeeze().tolist())
+            test_targets.extend(target.squeeze().tolist())
+
+        # 计算top k的正例比例
+        ratios = calculate_top_k_ratio(test_preds, test_targets, top_k_list)
+        # 输出结果
+        for k, ratio in ratios.items():
+            print(f"{brand_id} Top {k} ratio of positive labels: {ratio:.4f}")
+        # 如果需要保存结果到文件
+        with open(f'{log_dir}/models_{brand_id}_top_results_din_{total_step}.txt', 'w') as f:
+            for k, ratio in ratios.items():
+                f.write(f"Top {k} ratio of positive labels: {ratio:.4f}\n")
+
 
 def train_model(train_loader, test_loader_dict, model, criterion, optimizer, num_epochs=3):
     total_step = 0
