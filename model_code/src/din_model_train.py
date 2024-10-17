@@ -67,8 +67,8 @@ for epoch in range(num_epochs):
         total_step += 1
         if (total_step+1) % 10 == 0:
             writer.add_scalar('Training Loss', loss.item(), total_step)
-        if (total_step+1) % 100 == 0:
-            print(f'Epoch {epoch}, Step {total_step}: Loss={loss.item(): .4f}')
+        if (total_step+1) % 500 == 0:
+            print(f'Epoch {epoch}, Step {total_step+1}: Loss={loss.item(): .4f}')
         if (total_step+1) % 7000 == 0:
             with torch.no_grad():
                 model.eval()
@@ -78,6 +78,9 @@ for epoch in range(num_epochs):
                     test_preds = []
                     test_targets = []
                     for data, mask, target in dataloader_test_dict[brand_id]:
+                        for feature in data.keys():
+                            data[feature] = data[feature].to(device)
+                            mask[feature] = mask[feature].to(device)
                         output = model(data, mask)
                         test_preds.extend(output.sigmoid().squeeze().tolist())
                         test_targets.extend(target.squeeze().tolist())
@@ -98,12 +101,14 @@ for epoch in range(num_epochs):
 with torch.no_grad():
     model.eval()
     for brand_id in brands:
-        #brand_id='b56508'
         # 需要计算top数量
         top_k_list = [1000, 3000, 5000, 10000, 50000]
         test_preds = []
         test_targets = []
         for data, mask, target in dataloader_test_dict[brand_id]:
+            for feature in data.keys():
+                data[feature] = data[feature].to(device)
+                mask[feature] = mask[feature].to(device)
             output = model(data, mask)
             test_preds.extend(output.sigmoid().squeeze().tolist())
             test_targets.extend(target.squeeze().tolist())
